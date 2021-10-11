@@ -98,7 +98,8 @@ impl<T> GhostRecord<T> {
     }
 }
 
-impl<T> Model for MyVec<T> {
+impl<T> Model for MyVec<T>
+    where T: ?Sized {
     type ModelTy = List<T>;
     #[logic_rust]
     #[trusted]

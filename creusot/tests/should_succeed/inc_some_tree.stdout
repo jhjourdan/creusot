@@ -220,7 +220,7 @@ end
 module CreusotContracts_Builtins_Impl5
   use mach.int.Int
   use mach.int.UInt32
-  clone export CreusotContracts_Builtins_Impl5_Model
+  clone export CreusotContracts_Builtins_Impl5_Model_Interface
   type modelty  = 
     int
   clone export CreusotContracts_Builtins_Model with type self = uint32, type modelty = modelty, function model = model
@@ -486,7 +486,7 @@ module IncSomeTree_IncSomeTree
   clone CreusotContracts_Builtins_Impl1_Model as Model0 with type t = uint32, type Model0.modelty = Model1.modelty,
   function Model0.model = Model1.model
   clone IncSomeTree_Impl1_TakeSome_Interface as TakeSome0 with function Model0.model = Model0.model,
-  function Sum0.sum = Sum0.sum, type Model1.modelty = Model1.modelty, function Model1.model = Model1.model
+  function Sum0.sum = Sum0.sum, function Model1.model = Model1.model
   clone IncSomeTree_Impl1_SumX_Interface as SumX0 with function Sum0.sum = Sum0.sum
   let rec cfg inc_some_tree (t : Type.incsometree_tree) (k : uint32) : ()
     requires {Sum0.sum t + k <= 1000000}

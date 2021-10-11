@@ -95,7 +95,7 @@ module CreusotContracts_Builtins_Resolve
 end
 module Modules_Nested_Impl0
   use Type
-  clone export Modules_Nested_Impl0_Resolve
+  clone export Modules_Nested_Impl0_Resolve_Interface
   clone export CreusotContracts_Builtins_Resolve with type self = Type.modules_nested_nested,
   predicate resolve = resolve
 end

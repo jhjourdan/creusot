@@ -56,7 +56,7 @@ end
 module CreusotContracts_Builtins_Impl19
   type t   
   use prelude.Prelude
-  clone export CreusotContracts_Builtins_Impl19_Resolve with type t = t
+  clone export CreusotContracts_Builtins_Impl19_Resolve_Interface with type t = t
   clone export CreusotContracts_Builtins_Resolve with type self = borrowed t, predicate resolve = resolve
 end
 module DropPair_DropPair2_Interface

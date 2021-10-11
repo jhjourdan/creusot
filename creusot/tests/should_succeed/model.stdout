@@ -87,7 +87,7 @@ end
 module Model_Impl0
   use Type
   use mach.int.Int
-  clone export Model_Impl0_Model
+  clone export Model_Impl0_Model_Interface
   type modelty  = 
     int
   clone export CreusotContracts_Builtins_Model with type self = Type.model_seven, type modelty = modelty,
@@ -97,7 +97,7 @@ module Model_Impl1
   type t   
   type u   
   use Type
-  clone export Model_Impl1_Model with type t = t, type u = u
+  clone export Model_Impl1_Model_Interface with type t = t, type u = u
   type modelty  = 
     (t, u)
   clone export CreusotContracts_Builtins_Model with type self = Type.model_pair t u, type modelty = modelty,

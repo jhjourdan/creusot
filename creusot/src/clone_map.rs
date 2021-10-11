@@ -276,9 +276,11 @@ impl<'tcx> CloneMap<'tcx> {
                 if !self.use_full_clones && !info.public {
                     continue;
                 }
+                debug!("adding dependency {:?}", dep);
 
                 let orig = dep;
                 let dep = (dep.0, dep.1.subst(self.tcx, key.1));
+                debug!("substituted: {:?}", dep);
                 let dep = match traits::resolve_opt(ctx.tcx, ctx.tcx.param_env(key.0), dep.0, dep.1)
                 {
                     Some(dep) => (dep),
@@ -355,7 +357,7 @@ impl<'tcx> CloneMap<'tcx> {
 
                 // Grab the symbols from all dependencies
                 let caller_info = &self.names[&dep];
-                for sym in exported_symbols(ctx.tcx, dep.0) {
+                for sym in refinable_symbols(ctx.tcx, orig_subst.unwrap_or(dep).0) {
                     let elem = match sym {
                         SymbolKind::Val(n) => CloneSubst::Val(
                             recv_info.qname_raw(n.clone()),
@@ -470,7 +472,7 @@ enum SymbolKind {
 // In short:
 // - All kinds of functions: function name
 // - Traits & Impls: All functions in the trait/impl + all associated types
-fn exported_symbols(
+fn refinable_symbols(
     tcx: TyCtxt<'tcx>,
     def_id: DefId,
 ) -> Box<dyn Iterator<Item = SymbolKind> + 'tcx> {
@@ -483,7 +485,9 @@ fn exported_symbols(
         Pure => Box::new(
             iter::once(SymbolKind::Function(method_name(tcx, def_id))), // .chain(iter::once(SymbolKind::Val(method_name(tcx, def_id)))),
         ),
-        Trait | Impl => {
+        Trait =>
+        // Trait | Impl =>
+        {
             Box::new(tcx.associated_items(def_id).in_definition_order().filter_map(move |a| {
                 match a.kind {
                     AssocKind::Fn => match util::item_type(tcx, a.def_id) {
@@ -495,6 +499,21 @@ fn exported_symbols(
                     AssocKind::Type => Some(SymbolKind::Type(
                         crate::translation::ty::ty_name(tcx, a.def_id).into(),
                     )),
+                    AssocKind::Const => None,
+                }
+            }))
+        }
+        Impl => {
+            debug!("def_id={:?} is of type impl", def_id);
+            Box::new(tcx.associated_items(def_id).in_definition_order().filter_map(move |a| {
+                match a.kind {
+                    AssocKind::Fn => match util::item_type(tcx, a.def_id) {
+                        Logic => Some(SymbolKind::Function(method_name(tcx, a.def_id))),
+                        Predicate => Some(SymbolKind::Predicate(method_name(tcx, a.def_id))),
+                        Program => Some(SymbolKind::Val(method_name(tcx, a.def_id))),
+                        _ => unreachable!(),
+                    },
+                    AssocKind::Type => None,
                     AssocKind::Const => None,
                 }
             }))

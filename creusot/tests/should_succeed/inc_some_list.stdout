@@ -407,7 +407,7 @@ module IncSomeList_IncSomeList
   clone CreusotContracts_Builtins_Impl1_Model as Model0 with type t = uint32, type Model0.modelty = Model1.modelty,
   function Model0.model = Model1.model
   clone IncSomeList_Impl1_TakeSome_Interface as TakeSome0 with function Model0.model = Model0.model,
-  function Sum0.sum = Sum0.sum, type Model1.modelty = Model1.modelty, function Model1.model = Model1.model
+  function Sum0.sum = Sum0.sum, function Model1.model = Model1.model
   clone IncSomeList_Impl1_SumX_Interface as SumX0 with function Sum0.sum = Sum0.sum
   let rec cfg inc_some_list (l : Type.incsomelist_list) (k : uint32) : ()
     requires {Sum0.sum l + k <= 1000000}

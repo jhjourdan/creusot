@@ -377,6 +377,6 @@ module ListIndexMut_Main
 end
 module ListIndexMut_Impl0
   use Type
-  clone export ListIndexMut_Impl0_Resolve
+  clone export ListIndexMut_Impl0_Resolve_Interface
   clone export CreusotContracts_Builtins_Resolve with type self = Type.listindexmut_list, predicate resolve = resolve
 end
