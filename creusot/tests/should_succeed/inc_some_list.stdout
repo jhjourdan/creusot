@@ -188,6 +188,14 @@ module CreusotContracts_Builtins_Impl5_Model
   function model (self : uint32) : int = 
     self
 end
+module CreusotContracts_Builtins_Impl5_Interface
+  use mach.int.Int
+  use mach.int.UInt32
+  clone export CreusotContracts_Builtins_Impl5_Model_Interface
+  type modelty  = 
+    int
+  clone export CreusotContracts_Builtins_Model with type self = uint32, type modelty = modelty, function model = model
+end
 module CreusotContracts_Builtins_Impl5
   use mach.int.Int
   use mach.int.UInt32
@@ -221,7 +229,7 @@ module IncSomeList_Impl1_TakeSome_Interface
   use mach.int.Int
   use mach.int.UInt32
   clone IncSomeList_Impl1_Sum_Interface as Sum0
-  clone CreusotContracts_Builtins_Impl5 as Model1
+  clone CreusotContracts_Builtins_Impl5_Interface as Model1
   clone CreusotContracts_Builtins_Impl1_Model_Interface as Model0 with type t = uint32,
   type Model0.modelty = Model1.modelty, function Model0.model = Model1.model
   val take_some (self : borrowed (Type.incsomelist_list)) : borrowed uint32
@@ -491,6 +499,10 @@ module IncSomeList_IncSomeList
 end
 module CreusotContracts_WellFounded
   type self   
+end
+module IncSomeList_Impl0_Interface
+  use Type
+  clone export CreusotContracts_WellFounded with type self = Type.incsomelist_list
 end
 module IncSomeList_Impl0
   use Type

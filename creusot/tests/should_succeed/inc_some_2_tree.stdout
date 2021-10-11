@@ -217,10 +217,18 @@ module CreusotContracts_Builtins_Impl5_Model
   function model (self : uint32) : int = 
     self
 end
-module CreusotContracts_Builtins_Impl5
+module CreusotContracts_Builtins_Impl5_Interface
   use mach.int.Int
   use mach.int.UInt32
   clone export CreusotContracts_Builtins_Impl5_Model_Interface
+  type modelty  = 
+    int
+  clone export CreusotContracts_Builtins_Model with type self = uint32, type modelty = modelty, function model = model
+end
+module CreusotContracts_Builtins_Impl5
+  use mach.int.Int
+  use mach.int.UInt32
+  clone export CreusotContracts_Builtins_Impl5_Model
   type modelty  = 
     int
   clone export CreusotContracts_Builtins_Model with type self = uint32, type modelty = modelty, function model = model
@@ -249,7 +257,7 @@ module IncSome2Tree_Impl1_TakeSomeRest_Interface
   use Type
   use mach.int.Int
   use mach.int.UInt32
-  clone CreusotContracts_Builtins_Impl5 as Model1
+  clone CreusotContracts_Builtins_Impl5_Interface as Model1
   clone CreusotContracts_Builtins_Impl1_Model_Interface as Model0 with type t = uint32,
   type Model0.modelty = Model1.modelty, function Model0.model = Model1.model
   clone IncSome2Tree_Impl1_Sum_Interface as Sum0
@@ -479,10 +487,16 @@ module Core_Panicking_Panic
     ensures { false }
     
 end
-module CreusotContracts_Builtins_Impl19
+module CreusotContracts_Builtins_Impl19_Interface
   type t   
   use prelude.Prelude
   clone export CreusotContracts_Builtins_Impl19_Resolve_Interface with type t = t
+  clone export CreusotContracts_Builtins_Resolve with type self = borrowed t, predicate resolve = resolve
+end
+module CreusotContracts_Builtins_Impl19
+  type t   
+  use prelude.Prelude
+  clone export CreusotContracts_Builtins_Impl19_Resolve with type t = t
   clone export CreusotContracts_Builtins_Resolve with type self = borrowed t, predicate resolve = resolve
 end
 module IncSome2Tree_IncSome2Tree_Interface
@@ -636,6 +650,10 @@ module IncSome2Tree_IncSome2Tree
 end
 module CreusotContracts_WellFounded
   type self   
+end
+module IncSome2Tree_Impl0_Interface
+  use Type
+  clone export CreusotContracts_WellFounded with type self = Type.incsome2tree_tree
 end
 module IncSome2Tree_Impl0
   use Type

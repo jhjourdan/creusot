@@ -96,9 +96,17 @@ impl<'tcx> TranslationCtx<'_, 'tcx> {
 
         let decls = self.build_impl_module(&mut names, trait_ref, impl_id);
         let name = translate_value_id(self.tcx, impl_id);
+        let modl = Module { name: name.name(), decls };
 
-        self.add_impl(impl_id, Module { name: name.name(), decls });
+        let mut names = CloneMap::new(self.tcx, false);
+
+        let interface_decls = self.build_impl_module(&mut names, trait_ref, impl_id);
+        let interface_name = interface_name(self.tcx, impl_id);
+        let iface = Module { name: interface_name, decls: interface_decls };
+        self.add_impl(impl_id, modl, iface);
     }
+
+
 
     fn build_impl_module(
         &mut self,
@@ -352,6 +360,8 @@ pub fn resolve_trait_opt(
 }
 
 use rustc_middle::ty::AssocItemContainer;
+
+use super::interface::interface_name;
 pub fn resolve_assoc_item_opt(
     tcx: TyCtxt<'tcx>,
     param_env: ParamEnv<'tcx>,

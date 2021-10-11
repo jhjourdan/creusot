@@ -445,18 +445,18 @@ fn cloneable_name(tcx: TyCtxt, def_id: DefId, interface: bool) -> QName {
 
     // TODO: Refactor.
     match util::item_type(tcx, def_id) {
-        Logic | Predicate | Pure => {
+        Logic | Predicate | Pure | Impl => {
             if interface {
                 // TODO: this should directly be a function...
                 QName { module: Vec::new(), name: interface::interface_name(tcx, def_id) }
             } else {
-                qname.module_name().unwrap().clone().into()
+                qname.module_name().unwrap_or(&qname.name()).clone().into()
             }
         }
         Interface | Program => {
             QName { module: Vec::new(), name: interface::interface_name(tcx, def_id) }
         }
-        Trait | Impl => qname,
+        Trait => qname,
         Type => unreachable!(),
     }
 }
