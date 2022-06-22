@@ -3886,7 +3886,7 @@
    <goal name="delete_rec&#39;vc.165.0" expl="postcondition" proved="true">
    <transf name="split_vc" proved="true" >
     <goal name="delete_rec&#39;vc.165.0.0" expl="postcondition" proved="true">
-    <proof prover="2"><result status="valid" time="0.95" steps="18783"/></proof>
+    <proof prover="0" timelimit="5" memlimit="2000"><result status="valid" time="0.21" steps="75599"/></proof>
     </goal>
    </transf>
    </goal>
